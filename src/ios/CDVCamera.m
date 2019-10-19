@@ -517,11 +517,18 @@ static NSString* toBase64(NSData* data) {
 
     NSArray* spliteArray = [moviePath componentsSeparatedByString: @"/"];
     NSString* lastString = [spliteArray lastObject];
+    NSUInteger location = [lastString rangeOfString:@"."].location + 1;
+    NSString *substring = [lastString substringFromIndex:location];
+
     NSError *error;
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"tmp"];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:lastString];
-    [fileManager copyItemAtPath:moviePath toPath:filePath error:&error];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:substring];
+
+    NSURL *videoURL = info[UIImagePickerControllerMediaURL];
+    [[NSFileManager defaultManager] copyItemAtURL:videoURL
+                                          toURL:[NSURL fileURLWithPath:filePath]
+                                          error:&error];
 
     return [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:filePath];	
 	
