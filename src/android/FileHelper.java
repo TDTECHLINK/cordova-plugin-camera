@@ -137,7 +137,6 @@ public class FileHelper {
                 } else if ("audio".equals(type)) {
                     contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
                 }
-                LOG.d(LOG_TAG, "Media Doc uri path: " + contentUri.getPath());
                 final String selection = "_id=?";
                 final String[] selectionArgs = new String[] {
                         split[1]
@@ -152,12 +151,12 @@ public class FileHelper {
             // Return the remote address
             if (isGooglePhotosUri(uri))
                 return uri.getLastPathSegment();
-            LOG.d(LOG_TAG, "Content Media Store: " + contentUri.getPath());
+            LOG.d(LOG_TAG, "Content Media Store: " + uri.getPath());
             return getDataColumn(context, uri, null, null);
         }
         // File
         else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            LOG.d(LOG_TAG, "Content File: " + contentUri.getPath());
+            LOG.d(LOG_TAG, "Content File: " + uri.getPath());
             return uri.getPath();
         }
 
