@@ -113,8 +113,7 @@ public class FileHelper {
                         LOG.d(LOG_TAG, "The ID: " + id);
                         // final Uri contentUri = ContentUris.withAppendedId(
                         //         Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
-                        LOG.d(LOG_TAG, "Content Uri: " + contentUri);
-                        return getDataColumn(context, contentUri, null, null);
+                        return getDataColumn(context, uri, null, null);
                     } catch (NumberFormatException e) {
                         return null;
                     }
