@@ -81,9 +81,10 @@ public class FileHelper {
         LOG.d(LOG_TAG, "Version code: " + Build.VERSION.SDK_INT);
         LOG.d(LOG_TAG, "Is Kitkat: " + isKitKat);
         LOG.d(LOG_TAG, "File scheme is: " + uri.getScheme());
-        LOG.d(LOG_TAG, "File URI is: " + uri.getPath());
-        LOG.d(LOG_TAG, "File URI is: " + uri.getAuthority());
-        LOG.d(LOG_TAG, "File URI is: " + uri.getLastPathSegment());
+        LOG.d(LOG_TAG, "File URI path is: " + uri.getPath());
+        LOG.d(LOG_TAG, "File URI auth is: " + uri.getAuthority());
+        LOG.d(LOG_TAG, "File URI last p seg is: " + uri.getLastPathSegment());
+        LOG.d(LOG_TAG, "Is Doc uri" + DocumentsContract.isDocumentUri(context, uri));
         // DocumentProvider
         if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
 
@@ -109,9 +110,10 @@ public class FileHelper {
                         return id.replaceFirst("raw:", "");
                     }
                     try {
-                        final Uri contentUri = ContentUris.withAppendedId(
-                                Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
-                        LOG.d(LOG_TAG, "Content Uri: " + contentUri.getPath());
+                        LOG.d(LOG_TAG, "The ID: " + id);
+                        // final Uri contentUri = ContentUris.withAppendedId(
+                        //         Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+                        LOG.d(LOG_TAG, "Content Uri: " + contentUri);
                         return getDataColumn(context, contentUri, null, null);
                     } catch (NumberFormatException e) {
                         return null;
@@ -150,11 +152,12 @@ public class FileHelper {
             // Return the remote address
             if (isGooglePhotosUri(uri))
                 return uri.getLastPathSegment();
-
+            LOG.d(LOG_TAG, "Content Media Store: " + contentUri.getPath());
             return getDataColumn(context, uri, null, null);
         }
         // File
         else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            LOG.d(LOG_TAG, "Content File: " + contentUri.getPath());
             return uri.getPath();
         }
 
