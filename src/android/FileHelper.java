@@ -78,6 +78,7 @@ public class FileHelper {
     public static String getRealPathFromURI_API11_And_Above(final Context context, final Uri uri) {
 
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+        LOG.d(LOG_TAG, "Version code: " + Build.VERSION.SDK_INT);
         LOG.d(LOG_TAG, "Is Kitkat: " + isKitKat);
         LOG.d(LOG_TAG, "File scheme is: " + uri.getScheme());
         LOG.d(LOG_TAG, "File URI is: " + uri.getPath());
@@ -102,6 +103,7 @@ public class FileHelper {
             else if (isDownloadsDocument(uri)) {
 
                 final String id = DocumentsContract.getDocumentId(uri);
+                LOG.d(LOG_TAG, "DocumentId: " + id);
                 if (id != null && id.length() > 0) {
                     if (id.startsWith("raw:")) {
                         return id.replaceFirst("raw:", "");
@@ -109,7 +111,7 @@ public class FileHelper {
                     try {
                         final Uri contentUri = ContentUris.withAppendedId(
                                 Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
-
+                        LOG.d(LOG_TAG, "Content Uri: " + contentUri.getPath());
                         return getDataColumn(context, contentUri, null, null);
                     } catch (NumberFormatException e) {
                         return null;
@@ -123,7 +125,8 @@ public class FileHelper {
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
                 final String type = split[0];
-
+                LOG.d(LOG_TAG, "Media Doc Type: " + type);
+                LOG.d(LOG_TAG, "Media Doc DocId: " + docId);
                 Uri contentUri = null;
                 if ("image".equals(type)) {
                     contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
@@ -132,7 +135,7 @@ public class FileHelper {
                 } else if ("audio".equals(type)) {
                     contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
                 }
-
+                LOG.d(LOG_TAG, "Media Doc uri path: " + contentUri.getPath());
                 final String selection = "_id=?";
                 final String[] selectionArgs = new String[] {
                         split[1]
