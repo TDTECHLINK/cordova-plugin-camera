@@ -78,6 +78,11 @@ public class FileHelper {
     public static String getRealPathFromURI_API11_And_Above(final Context context, final Uri uri) {
 
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+        LOG.d(LOG_TAG, "Is Kitkat: " + isKitKat);
+        LOG.d(LOG_TAG, "File scheme is: " + uri.getScheme());
+        LOG.d(LOG_TAG, "File URI is: " + uri.getPath());
+        LOG.d(LOG_TAG, "File URI is: " + uri.getAuthority());
+        LOG.d(LOG_TAG, "File URI is: " + uri.getLastPathSegment());
         // DocumentProvider
         if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
 
