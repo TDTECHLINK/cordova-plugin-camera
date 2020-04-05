@@ -115,7 +115,7 @@ public class FileHelper {
                         // API 29+ Android 10
                         // if pulling in from downloads or other path from file explorer
                         String resolverType = context.getContentResolver().getType(uri);
-                        LOG.d(LOG_TAG, "Resolver type: " + type);
+                        LOG.d(LOG_TAG, "Resolver type: " + resolverType);
                         final String[] split = resolverType.split("/");
                         return getMediaDocumentFromDocumentId(context, split[0] + ":" + id.replaceFirst("msf:", ""));                     
                     }
