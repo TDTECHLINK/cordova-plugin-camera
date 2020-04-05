@@ -116,7 +116,7 @@ public class FileHelper {
                         DocumentFile docFile = DocumentFile.fromSingleUri(context, uri);
                         String type = docFile.getType();
                         LOG.d(LOG_TAG, "Docfile type: " + type);  
-                        return getMediaDocumentFromDocumentId("video:" + id);                     
+                        return getMediaDocumentFromDocumentId(context, "video:" + id);                     
                     }
                     try {
                         LOG.d(LOG_TAG, "The ID: " + id);
@@ -171,7 +171,7 @@ public class FileHelper {
         return null;
     }
 
-    public static String getMediaDocumentFromDocumentId(String docId) {
+    public static String getMediaDocumentFromDocumentId(final Context context, String docId) {
         final String[] split = docId.split(":");
         final String type = split[0];
         LOG.d(LOG_TAG, "Media Doc Type: " + type);
