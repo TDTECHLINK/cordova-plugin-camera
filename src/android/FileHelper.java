@@ -105,14 +105,14 @@ public class FileHelper {
             // DownloadsProvider
             else if (isDownloadsDocument(uri)) {
 
-                final String id = DocumentsContract.getDocumentId(uri);
+                String id = DocumentsContract.getDocumentId(uri);
                 LOG.d(LOG_TAG, "DocumentId: " + id);
                 if (id != null && id.length() > 0) {
                     if (id.startsWith("raw:")) {
                         return id.replaceFirst("raw:", "");
                     }
                     if (id.startsWith("msf:")) {
-                        return id.replaceFirst("msf:", "");
+                        id = id.replaceFirst("msf:", "");
                     }
                     // https://stackoverflow.com/questions/48510584/onactivityresults-intent-getpath-doesnt-give-me-the-correct-filename
                     DocumentFile docFile = DocumentFile.fromSingleUri(context, uri);
