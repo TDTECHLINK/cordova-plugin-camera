@@ -113,17 +113,13 @@ public class FileHelper {
                     }
                     if (id.startsWith("msf:")) {
                         // API 29+ Android 10
-                        id = id.replaceFirst("msf:", "");
-                        DocumentFile docFile = DocumentFile.fromSingleUri(context, uri);
-                        String type = docFile.getType();
-                        final String[] split = type.split("/");
-                        LOG.d(LOG_TAG, "Docfile type: " + type);
+                        // if pulling in from downloads or other path from file explorer
                         String resolverType = context.getContentResolver().getType(uri);
                         LOG.d(LOG_TAG, "Resolver type: " + type);
-                        return getMediaDocumentFromDocumentId(context, split[0] + ":" + id);                     
+                        final String[] split = resolverType.split("/");
+                        return getMediaDocumentFromDocumentId(context, split[0] + ":" + id.replaceFirst("msf:", ""));                     
                     }
                     try {
-                        LOG.d(LOG_TAG, "The ID: " + id);
                         final Uri contentUri = ContentUris.withAppendedId(
                                 Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
                         return getDataColumn(context, contentUri, null, null);
@@ -137,24 +133,7 @@ public class FileHelper {
             // MediaProvider
             else if (isMediaDocument(uri)) {
                 final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-                LOG.d(LOG_TAG, "Media Doc Type: " + type);
-                LOG.d(LOG_TAG, "Media Doc DocId: " + docId);
-                Uri contentUri = null;
-                if ("image".equals(type)) {
-                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                } else if ("video".equals(type)) {
-                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                } else if ("audio".equals(type)) {
-                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                }
-                final String selection = "_id=?";
-                final String[] selectionArgs = new String[] {
-                        split[1]
-                };
-
-                return getDataColumn(context, contentUri, selection, selectionArgs);
+                return getMediaDocumentFromDocumentId(context, docId);
             }
         }
         // MediaStore (and general)
