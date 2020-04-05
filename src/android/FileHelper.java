@@ -27,6 +27,8 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.webkit.MimeTypeMap;
+import android.support.v4.provider.DocumentFile;
+
 
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.LOG;
