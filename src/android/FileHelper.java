@@ -122,7 +122,7 @@ public class FileHelper {
                         LOG.d(LOG_TAG, "Doc URI path is: " + docUri.getPath());
                         LOG.d(LOG_TAG, "Doc URI auth is: " + docUri.getAuthority());
                         LOG.d(LOG_TAG, "Doc URI last p seg is: " + docUri.getLastPathSegment());
-                        LOG.d(LOG_TAG, "Is Doc uri" + DocumentsContract.isDocumentUri(context, uri));
+                        LOG.d(LOG_TAG, "Is Doc uri" + DocumentsContract.isDocumentUri(context, docUri));
                         LOG.d(LOG_TAG, "Docfile id: " + DocumentsContract.getDocumentId(docUri));
                         LOG.d(LOG_TAG, "Docfile name: " + fileName);
                     }
