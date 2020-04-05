@@ -109,11 +109,19 @@ public class FileHelper {
                     if (id.startsWith("raw:")) {
                         return id.replaceFirst("raw:", "");
                     }
+                    if (id.startsWith("msf:")) {
+                        return id.replaceFirst("msf:", "");
+                    }
+                    // https://stackoverflow.com/questions/48510584/onactivityresults-intent-getpath-doesnt-give-me-the-correct-filename
+                    DocumentFile docFile = DocumentFile.fromSingleUri(uri);
+                    String fileName = docFile.getName();
+                    LOG.d(LOG_TAG, "Docfile name: " + fileName);
                     try {
                         LOG.d(LOG_TAG, "The ID: " + id);
-                        // final Uri contentUri = ContentUris.withAppendedId(
-                        //         Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
-                        return getDataColumn(context, uri, null, null);
+                        // https://stackoverflow.com/questions/58660420/api-level-29-intent-action-get-content-returning-wrong-id-from-downloads-folder
+                        final Uri contentUri = ContentUris.withAppendedId(
+                                Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+                        return getDataColumn(context, contentUri, null, null);
                     } catch (NumberFormatException e) {
                         return null;
                     }
