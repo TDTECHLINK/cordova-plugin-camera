@@ -113,22 +113,13 @@ public class FileHelper {
                     }
                     if (id.startsWith("msf:")) {
                         id = id.replaceFirst("msf:", "");
-                        // https://stackoverflow.com/questions/48510584/onactivityresults-intent-getpath-doesnt-give-me-the-correct-filename
                         DocumentFile docFile = DocumentFile.fromSingleUri(context, uri);
-                        String fileName = docFile.getName();
-                        LOG.d(LOG_TAG, "Docfile name: " + fileName);
-                        Uri docUri = docFile.getUri();
-                        LOG.d(LOG_TAG, "File scheme is: " + docUri.getScheme());
-                        LOG.d(LOG_TAG, "Doc URI path is: " + docUri.getPath());
-                        LOG.d(LOG_TAG, "Doc URI auth is: " + docUri.getAuthority());
-                        LOG.d(LOG_TAG, "Doc URI last p seg is: " + docUri.getLastPathSegment());
-                        LOG.d(LOG_TAG, "Is Doc uri" + DocumentsContract.isDocumentUri(context, docUri));
-                        LOG.d(LOG_TAG, "Docfile id: " + DocumentsContract.getDocumentId(docUri));
-                        LOG.d(LOG_TAG, "Docfile name: " + fileName);
+                        String type = docFile.getType();
+                        LOG.d(LOG_TAG, "Docfile type: " + type);  
+                        return getMediaDocumentFromDocumentId("video:" + id);                     
                     }
                     try {
                         LOG.d(LOG_TAG, "The ID: " + id);
-                        // https://stackoverflow.com/questions/58660420/api-level-29-intent-action-get-content-returning-wrong-id-from-downloads-folder
                         final Uri contentUri = ContentUris.withAppendedId(
                                 Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
                         return getDataColumn(context, contentUri, null, null);
@@ -178,6 +169,26 @@ public class FileHelper {
         }
 
         return null;
+    }
+
+    public static String getMediaDocumentFromDocumentId(String docId) {
+        final String[] split = docId.split(":");
+        final String type = split[0];
+        LOG.d(LOG_TAG, "Media Doc Type: " + type);
+        LOG.d(LOG_TAG, "Media Doc DocId: " + docId);
+        Uri contentUri = null;
+        if ("image".equals(type)) {
+            contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        } else if ("video".equals(type)) {
+            contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+        } else if ("audio".equals(type)) {
+            contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        }
+        final String selection = "_id=?";
+        final String[] selectionArgs = new String[] {
+                split[1]
+        };
+        return getDataColumn(context, contentUri, selection, selectionArgs);
     }
 
     public static String getRealPathFromURI_BelowAPI11(Context context, Uri contentUri) {
