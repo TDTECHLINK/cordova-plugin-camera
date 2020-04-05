@@ -113,11 +113,19 @@ public class FileHelper {
                     }
                     if (id.startsWith("msf:")) {
                         id = id.replaceFirst("msf:", "");
+                        // https://stackoverflow.com/questions/48510584/onactivityresults-intent-getpath-doesnt-give-me-the-correct-filename
+                        DocumentFile docFile = DocumentFile.fromSingleUri(context, uri);
+                        String fileName = docFile.getName();
+                        LOG.d(LOG_TAG, "Docfile name: " + fileName);
+                        Uri docUri = docFile.getUri();
+                        LOG.d(LOG_TAG, "File scheme is: " + docUri.getScheme());
+                        LOG.d(LOG_TAG, "Doc URI path is: " + docUri.getPath());
+                        LOG.d(LOG_TAG, "Doc URI auth is: " + docUri.getAuthority());
+                        LOG.d(LOG_TAG, "Doc URI last p seg is: " + docUri.getLastPathSegment());
+                        LOG.d(LOG_TAG, "Is Doc uri" + DocumentsContract.isDocumentUri(context, uri));
+                        LOG.d(LOG_TAG, "Docfile id: " + DocumentsContract.getDocumentId(docUri));
+                        LOG.d(LOG_TAG, "Docfile name: " + fileName);
                     }
-                    // https://stackoverflow.com/questions/48510584/onactivityresults-intent-getpath-doesnt-give-me-the-correct-filename
-                    DocumentFile docFile = DocumentFile.fromSingleUri(context, uri);
-                    String fileName = docFile.getName();
-                    LOG.d(LOG_TAG, "Docfile name: " + fileName);
                     try {
                         LOG.d(LOG_TAG, "The ID: " + id);
                         // https://stackoverflow.com/questions/58660420/api-level-29-intent-action-get-content-returning-wrong-id-from-downloads-folder
