@@ -115,7 +115,7 @@ public class FileHelper {
                         return id.replaceFirst("msf:", "");
                     }
                     // https://stackoverflow.com/questions/48510584/onactivityresults-intent-getpath-doesnt-give-me-the-correct-filename
-                    DocumentFile docFile = DocumentFile.fromSingleUri(uri);
+                    DocumentFile docFile = DocumentFile.fromSingleUri(context, uri);
                     String fileName = docFile.getName();
                     LOG.d(LOG_TAG, "Docfile name: " + fileName);
                     try {
