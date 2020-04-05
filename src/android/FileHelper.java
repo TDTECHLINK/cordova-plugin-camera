@@ -112,11 +112,15 @@ public class FileHelper {
                         return id.replaceFirst("raw:", "");
                     }
                     if (id.startsWith("msf:")) {
+                        // API 29+ Android 10
                         id = id.replaceFirst("msf:", "");
                         DocumentFile docFile = DocumentFile.fromSingleUri(context, uri);
                         String type = docFile.getType();
-                        LOG.d(LOG_TAG, "Docfile type: " + type);  
-                        return getMediaDocumentFromDocumentId(context, "video:" + id);                     
+                        final String[] split = type.split("/");
+                        LOG.d(LOG_TAG, "Docfile type: " + type);
+                        String resolverType = context.getContentResolver().getType(uri);
+                        LOG.d(LOG_TAG, "Resolver type: " + type);
+                        return getMediaDocumentFromDocumentId(context, split[0] + ":" + id);                     
                     }
                     try {
                         LOG.d(LOG_TAG, "The ID: " + id);
